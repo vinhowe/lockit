@@ -3,6 +3,9 @@
 # lockit
 LockIt is simple applock application with clean &amp; elegant UI and easy-to-use.
 
+https://play.google.com/store/apps/details?id=com.lockit
+
+
 
 ![](https://j.gifs.com/APqlBz.gif)      ![](https://image.ibb.co/m5S4qb/Screenshot_2015_12_08_21_58_29.png)
 
