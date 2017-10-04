@@ -1,7 +1,10 @@
-![](https://thumb.ibb.co/jnAqVb/logo_512.png) # lockit
+![](https://image.ibb.co/gyaqVb/logo_512.png) 
+
+# lockit
 LockIt is simple applock application with clean &amp; elegant UI and easy-to-use.
 
-![](https://j.gifs.com/APqlBz.gif)![](https://image.ibb.co/kjLw3w/Screenshot_2015_12_08_21_58_29.png)
+
+![](https://j.gifs.com/APqlBz.gif)      ![](https://image.ibb.co/m5S4qb/Screenshot_2015_12_08_21_58_29.png)
 
 
 ★ <b>LockIt</b> applock can lock all installed application like Facebook, Gmail, WhatsApp, Photos etc..
