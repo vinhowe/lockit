@@ -1,6 +1,6 @@
 ![](https://image.ibb.co/gyaqVb/logo_512.png) 
 
-# lockit
+# Lockit
 LockIt is simple applock application with clean &amp; elegant UI and easy-to-use.
 
 https://play.google.com/store/apps/details?id=com.lockit
