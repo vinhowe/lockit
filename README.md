@@ -31,6 +31,3 @@ https://play.google.com/store/apps/details?id=com.lockit
 • Locks incoming or outgoing calls
 • Lock system Settings
 • Lock Google Play Store
-
-<b>Any feedback, please send to droipp.me@gmail.com</b>
-AppLock will Protect Your Privacy.
