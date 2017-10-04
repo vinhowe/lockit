@@ -3,6 +3,7 @@ LockIt is simple applock application with clean &amp; elegant UI and easy-to-use
 
 
 
+
 ★ <b>LockIt</b> applock can lock all installed application like Facebook, Gmail, WhatsApp, Photos etc..
 ★ With lockIt applock you can also lock system features like Calls, Settings, Install/Uninstall applications and Recent Tasks. By default we will lock application install/uninstall feature so that no one else can uninstall LockIt application and break in the security.
 
