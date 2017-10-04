@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AppLock</string>
+    <string name="drawer_header_text">LockIt: App Lock</string>
+    <string name="applock_nav_item">App Lock</string>
+</resources>

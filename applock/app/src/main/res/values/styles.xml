@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Toolbar.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorSwitchThumbNormal">@color/gray300</item>
+        <item name="android:colorForeground">@color/gray600</item>
+    </style>
+
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:textColorPrimary">@color/textColorBlack</item>
+        <item name="android:background">@color/white</item>
+    </style>
+</resources>

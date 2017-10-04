@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primaryColor">#03A9F4</color>
+    <color name="primaryColorLight">#B3E5FC</color>
+    <color name="primaryColorDark">#03A9F4</color>
+    <color name="accentColor">#F7B642</color>
+    <color name="colorControlNormal">#FFFFFF</color>
+    <color name="colorControlActivated">#F7B642</color>
+
+    <color name="textPrimaryColor">#FFFFFF</color>
+    <color name="primaryTextColor">#212121</color>
+    <color name="secondaryTextColor">#727272</color>
+    <color name="dividerColor">#B6B6B6</color>
+    <color name="dividerColorLight">#E6E6E6</color>
+
+    <color name="controlHighlightColor">#EAEAEA</color>
+    <color name="selectorPressed">#f7f9fa</color>
+
+
+    <color name="statusBarColor">#00879C</color>
+    <color name="colorPrimary">#FFF7F9FA</color>
+    <color name="colorPrimaryDark">#00879C</color>
+    <color name="colorPrimaryInverse">#388E3C</color>
+    <color name="textColorPrimary">#28364F</color>
+    <color name="textColorSecondary">#00BAD6</color>
+    <color name="app_background">#EAEAEA</color>
+    <color name="gray300">#DADADA</color>
+    <color name="gray600">#EAEAEA</color>
+
+    <color name="navyBlue">#14cde8</color>
+    <color name="white">#FFFFFF</color>
+    <color name="green">#08ce53</color>
+    <color name="pink">#FFD4D4</color>
+    <color name="gray">#9CA7B1</color>
+    <color name="lightGray">#f7f9fa</color>
+    <color name="white_highlight">#66FFFFFF</color>
+    <color name="toolbar_title">#28364F</color>
+    <color name="toolbar_subtitle">#00BAD6</color>
+    <color name="navy_blue_button">#14C5DF</color>
+
+    <color name="textColorNavyBlue">#00BAD6</color>
+    <color name="textColorBlack">#28364F</color>
+    <color name="textColorGrey">#9CA7B1</color>
+    <color name="dividerGrey">#e9eef3</color>
+    <color name="textColorGreen">#10c618</color>
+    <color name="textColorHint">#9ca7b1</color>
+    <color name="yellow">#e5fffb9b</color>
+
+    <color name="divider_gray">#dadada</color>
+    <color name="text_color_black">#323232</color>
+
+</resources>

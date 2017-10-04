@@ -1,0 +1,61 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lockit">
+
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:name="com.lockit.AppLockApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name="com.lockit.LockItActivity_"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.lockit.HomeActivity_"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.lockit.setpassword.SetPasswordActivity_"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.lockit.setpassword.ResetPasswordActivity_"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.lockit.setpassword.SetPasswordHomeActivity_"
+            android:screenOrientation="portrait" />
+
+        <!-- [START gcm_receiver] -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.applock" />
+            </intent-filter>
+        </receiver>
+        <!-- [END gcm_receiver] -->
+
+        <service android:name="com.lockit.AppLockService" />
+        <service android:name="com.lockit.LockService" />
+
+        <receiver android:name="com.lockit.receivers.BootCompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
