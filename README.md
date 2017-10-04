@@ -1,4 +1,4 @@
-![](https://image.ibb.co/myntiw/logo_512.png) # lockit
+![](https://image.ibb.co/gqhhbG/logo_512.png) # lockit
 LockIt is simple applock application with clean &amp; elegant UI and easy-to-use.
 
 ![](https://j.gifs.com/APqlBz.gif)![](https://image.ibb.co/kjLw3w/Screenshot_2015_12_08_21_58_29.png)
