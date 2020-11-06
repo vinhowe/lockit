@@ -1,7 +1,17 @@
 package com.lockit;
 
-import org.androidannotations.annotations.EActivity;
+import android.os.Bundle;
 
-@EActivity(R.layout.splash)
+import androidx.annotation.Nullable;
+
+import com.lockit.databinding.SplashBinding;
+
 public class SplashActivity extends BaseActivity {
+    private SplashBinding binding;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = SplashBinding.inflate(getLayoutInflater());
+    }
 }

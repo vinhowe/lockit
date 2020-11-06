@@ -1,21 +1,21 @@
 package com.lockit.apps;
 
+import androidx.lifecycle.Observer;
+
 import com.lockit.Application;
 
 import java.util.List;
 
-import rx.Observable;
-
 public interface ApplicationView {
-    Observable<Void> initialized();
+    void initialized(Observer<Void> observer);
 
     void showAllApps(List<Application> all);
 
-    Observable<String> appLocked();
+    void appLocked(Observer<String> observer);
 
     void showAppLocked();
 
-    Observable<String> appUnlocked();
+    void appUnlocked(Observer<String> observer);
 
     void showAppUnlocked();
 }

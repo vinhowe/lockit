@@ -4,12 +4,12 @@ import com.lockit.ApplicationRepo;
 
 public class AppsPresenter {
     public AppsPresenter(ApplicationRepo repo, ApplicationView view) {
-        view.initialized().subscribe(ignored -> view.showAllApps(repo.all()));
-        view.appLocked().subscribe(packageName -> {
+        view.initialized(__ -> view.showAllApps(repo.all()));
+        view.appLocked(packageName -> {
             repo.lockApp(packageName);
             view.showAppLocked();
         });
-        view.appUnlocked().subscribe(packageName -> {
+        view.appUnlocked(packageName -> {
             repo.unlockApp(packageName);
             view.showAppUnlocked();
         });

@@ -4,8 +4,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,32 +94,31 @@ public class LockService extends Service {
     }
 
     private View rootView() {
-        if (lockView == null)
-            lockView = LockView_.build(this, null);
-        lockView.reset();
-        lockView.setCode(AppPreference.prefs().get(PreferenceType.PASSCODE.toString(), String.class, ""));
+        if (lockView == null) {
+            lockView = new LockView(this, null);
+        }
+
         lockView.setTitle(application.getName());
         lockView.setIcon(application.getIcon());
-        // To check lock after app crashed.
-
-//        lockView.codeEntered().subscribe(code -> {
-//            int a;
-//            if (code.equalsIgnoreCase("2211"))
-//                a = 1 / 0;
-//        });
-        lockView.correctCodeEntered().subscribe(ignored -> hideLock());
-        lockView.backKeyPressed().subscribe(ignored -> exit());
         lockView.setFocusable(true);
         lockView.setFocusableInTouchMode(true);
         return lockView;
     }
 
     private ViewGroup.LayoutParams layoutParam() {
+        int layoutFlag;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layoutFlag = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            layoutFlag = WindowManager.LayoutParams.TYPE_PHONE;
+        }
+
         if (layoutParams == null)
             layoutParams = new LayoutParams(
                     LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT,
-                    LayoutParams.TYPE_PHONE,
+                    layoutFlag,
                     LayoutParams.FLAG_ALT_FOCUSABLE_IM
                             | LayoutParams.FLAG_NOT_TOUCH_MODAL
                             | LayoutParams.FLAG_FULLSCREEN

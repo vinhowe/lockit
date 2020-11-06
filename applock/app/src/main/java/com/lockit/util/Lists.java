@@ -1,6 +1,6 @@
 package com.lockit.util;
 
-import com.android.internal.util.Predicate;
+import androidx.core.util.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Lists {
     public static <T> List<T> filter(List<T> list, Predicate<T> predicate) {
         List<T> filteredList = new ArrayList<>();
         for (T t : list)
-            if (predicate.apply(t))
+            if (predicate.test(t))
                 filteredList.add(t);
         return filteredList;
     }

@@ -1,8 +1,7 @@
 package com.lockit;
 
-import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 public class AppLockApplication extends MultiDexApplication {
     private static AppLockApplication application;

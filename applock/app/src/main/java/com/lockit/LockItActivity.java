@@ -1,30 +1,32 @@
 package com.lockit;
 
-import com.lockit.setpassword.SetPasswordHomeActivity_;
+import android.content.Intent;
+import android.os.Bundle;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
+import androidx.annotation.Nullable;
 
-@EActivity(R.layout.fragment_container)
+import com.lockit.databinding.FragmentContainerBinding;
+
 public class LockItActivity extends BaseActivity {
-    @AfterViews
-    void init() {
-        String passcode = AppPreference.prefs().get(PreferenceType.PASSCODE.toString(), String.class, "");
-        if (!passcode.equalsIgnoreCase("")) {
-            PasswordFragment passwordFragment = PasswordFragment_.builder().code(passcode).build();
-            passwordFragment.correctCodeEntered().subscribe(i -> navigateHome());
-            Fragments.replaceContentFragment(this, R.id.container, passwordFragment, PasswordFragment.class.getSimpleName());
-        } else {
-            // By default lock install/uninstall package.
-            new InstalledApplication(this).lockApp(SystemApplication.installUninstallApp(this).getPackageName());
+    private FragmentContainerBinding binding;
 
-            SetPasswordHomeActivity_.intent(this).start();
-            finish();
-        }
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = FragmentContainerBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        init();
+    }
+
+    void init() {
+        new InstalledApplication(this).lockApp(SystemApplication.installUninstallApp(this).getPackageName());
+        navigateHome();
+        finish();
     }
 
     private void navigateHome() {
         finish();
-        HomeActivity_.intent(this).start();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 }

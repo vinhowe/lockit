@@ -3,14 +3,20 @@ package com.lockit;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LockedApplication {
     private static LockedApplication lockedApplication;
-    private List<String> lockedApplications;
+    private Set<String> lockedApplications;
 
     private LockedApplication() {
-        lockedApplications = lockedAppsFromPrefs();
+        reload();
+    }
+
+    public void reload() {
+        lockedApplications = new HashSet<>(lockedAppsFromPrefs());
     }
 
     private List<String> lockedAppsFromPrefs() {

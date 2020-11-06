@@ -1,108 +1,104 @@
 package com.lockit.apps;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lockit.Application;
 import com.lockit.BaseFragment;
 import com.lockit.CustomRecyclerAdapter;
-import com.lockit.R;
-import com.squareup.otto.Subscribe;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.IgnoredWhenDetached;
-import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
+import com.lockit.InstalledApplication;
+import com.lockit.databinding.AppsFragmentBinding;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.subjects.PublishSubject;
-
-import static com.lockit.BusProvider.bus;
-
-@EFragment(R.layout.apps_fragment)
 public class AppsFragment extends BaseFragment implements ApplicationView {
-    private PublishSubject<Void> initialization = PublishSubject.create();
-    private PublishSubject<String> appLock = PublishSubject.create();
-    private PublishSubject<String> appUnlock = PublishSubject.create();
-
-    @ViewById
-    RecyclerView apps;
+    AppsViewModel model;
 
     private CustomRecyclerAdapter<Application, AppItemView> appsAdapter;
 
-    @AfterViews
-    void init() {
-        bus().register(this);
-        initialization.onNext(null);
+    AppsFragmentBinding binding;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = AppsFragmentBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public Observable<Void> initialized() {
-        return bindObservable(initialization.asObservable());
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        model = new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(AppsViewModel.class);
+        init();
+    }
+
+    void init() {
+        model.getInitialization().setValue(null);
+        new AppsPresenter(new InstalledApplication(this.getActivity()), this);
+    }
+
+    @Override
+    public void initialized(@NonNull Observer<Void> observer) {
+        model.getInitialization().observe(getViewLifecycleOwner(), observer);
     }
 
     @Override
     @UiThread
-    @IgnoredWhenDetached
     public void showAllApps(List<Application> allApps) {
-        apps.setAdapter(appsAdapter(allApps));
-        apps.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        ItemClickSupport.addTo(apps)
-//                .setOnItemClickListener(
-//                        (view, position, id) -> appSelected(appsAdapter.getItem(position)));
+        binding.apps.setAdapter(appsAdapter(allApps));
+        binding.apps.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     @NonNull
     private CustomRecyclerAdapter<Application, AppItemView> appsAdapter(List<Application> allApps) {
-        if (appsAdapter == null)
-            appsAdapter = new CustomRecyclerAdapter<>(allApps, this::appItemView);
+        if (appsAdapter == null) {
+            appsAdapter = new CustomRecyclerAdapter<>(allApps, this::appItemView, this::appSelected);
+        }
         return appsAdapter;
     }
 
     private AppItemView appItemView() {
-        return AppItemView_.build(getActivity());
+        return new AppItemView(getContext());
     }
 
     @Override
-    public Observable<String> appLocked() {
-        return bindObservable(appLock.asObservable());
+    public void appLocked(Observer<String> observer) {
+        model.getAppLock().observe(getViewLifecycleOwner(), observer);
     }
 
     @Override
     @UiThread
-    @IgnoredWhenDetached
     public void showAppLocked() {
         appsAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public Observable<String> appUnlocked() {
-        return bindObservable(appUnlock.asObservable());
+    public void appUnlocked(Observer<String> observer) {
+        model.getAppUnlock().observe(getViewLifecycleOwner(), observer);
     }
 
     @Override
     @UiThread
-    @IgnoredWhenDetached
     public void showAppUnlocked() {
         appsAdapter.notifyDataSetChanged();
     }
 
-    @Subscribe
-    public void appSelected(Application application) {
-        if (application.isLocked())
-            appUnlock.onNext(application.getPackageName());
-        else
-            appLock.onNext(application.getPackageName());
+    public Void appSelected(Application application) {
         application.toggleLockState();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        bus().unregister(this);
+        if (application.isLocked()) {
+            model.getAppLock().setValue(application.getPackageName());
+        } else {
+            model.getAppUnlock().setValue(application.getPackageName());
+        }
+        return null;
     }
 }

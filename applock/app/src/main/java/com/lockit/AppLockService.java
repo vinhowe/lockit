@@ -1,7 +1,6 @@
 package com.lockit;
 
 import android.app.ActivityManager;
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.usage.UsageStats;
@@ -12,13 +11,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static android.app.ActivityManager.RunningTaskInfo;
 
@@ -70,6 +74,7 @@ public class AppLockService extends Service {
         String currentPackage = currentPackage();
         Log.d("AppLockService", "Package: " + currentPackage);
         if (!currentPackage.equalsIgnoreCase(lastPackage)) {
+            LockedApplication.instance().reload();
             if (LockedApplication.instance().contains(currentPackage))
                 lockedAppOpened(currentPackage);
             else lockedAppClosed(currentPackage);
@@ -115,19 +120,26 @@ public class AppLockService extends Service {
         return activityManager.getRunningTasks(1).get(0);
     }
 
-    public static final void start(Context context) {
-        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), 250, getRunIntent(context));
+    public static void start(Context context) {
+        ScheduledExecutorService scheduleTaskExecutor = Executors.newSingleThreadScheduledExecutor();
+
+        scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
+            public void run() {
+                try {
+                    getRunIntent(context).send();
+                } catch (PendingIntent.CanceledException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 1, TimeUnit.SECONDS);
         isAlarmStarted = true;
     }
 
-    public static final void stop(Context context) {
-        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.cancel(getRunIntent(context));
+    public static void stop(Context context) {
         isAlarmStarted = false;
     }
 
-    private static final PendingIntent getRunIntent(Context context) {
+    private static PendingIntent getRunIntent(Context context) {
         if (appLockServiceIntent == null) {
             Intent intent = new Intent(context, AppLockService.class);
             intent.setAction(ACTION_START);
@@ -140,8 +152,9 @@ public class AppLockService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d("AppLockService", "onDestroy called - " + destroy);
-        if (!destroy)
+        if (!destroy) {
             start(this);
+        }
 
         destroy = false;
     }
