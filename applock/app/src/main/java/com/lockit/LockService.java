@@ -98,8 +98,7 @@ public class LockService extends Service {
             lockView = new LockView(this, null);
         }
 
-        lockView.setTitle(application.getName());
-        lockView.setIcon(application.getIcon());
+        lockView.setAppName(application.getName());
         lockView.setFocusable(true);
         lockView.setFocusableInTouchMode(true);
         return lockView;

@@ -65,25 +65,25 @@ public class HomeActivity extends BaseActivity {
         binding.appBarLayout.title.setText(getString(R.string.app_name));
     }
 
-    void lockClicked() {
-        if (binding.appBarLayout.lock.isChecked()) {
-            AppLockService.start(this);
-        } else {
-            AppLockService.stop(this);
-        }
-        setAppLocked(binding.appBarLayout.lock.isChecked());
-    }
+//    void lockClicked() {
+//        if (binding.appBarLayout.lock.isChecked()) {
+//            AppLockService.start(this);
+//        } else {
+//            AppLockService.stop(this);
+//        }
+//        setAppLocked(binding.appBarLayout.lock.isChecked());
+//    }
 
     private void setAppLocked(boolean isLocked) {
         AppPreference.prefs().put(PreferenceType.IS_APP_LOCKED.toString(), isLocked);
     }
 
     void init() {
-        if (appLocked()) {
-            binding.appBarLayout.lock.setChecked(true);
-            AppLockService.start(this);
-        }
-        binding.appBarLayout.lock.setOnClickListener(__ -> lockClicked());
+//        if (appLocked()) {
+//            binding.appBarLayout.lock.setChecked(true);
+//            AppLockService.start(this);
+//        }
+//        binding.appBarLayout.lock.setOnClickListener(__ -> lockClicked());
         appsPresenter();
     }
 

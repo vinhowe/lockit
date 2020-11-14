@@ -46,30 +46,30 @@ public class AppLockService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("AppLockService", "AppLockService: onStartCommand called - ");
-
-        if (intent == null || intent.getAction().equalsIgnoreCase(ACTION_START)) {
+        boolean isLocked = AppPreference.prefs().get(PreferenceType.IS_APP_LOCKED.toString(), Boolean.TYPE, false);
+        if ((intent == null || intent.getAction().equalsIgnoreCase(ACTION_START)) && isLocked) {
             if (!isAlarmStarted) {
-                init();
+//                init();
                 start(this);
             }
             checkAppChanged();
-        } else if (intent.getAction().equalsIgnoreCase(ACTION_STOP)) {
+        } else if (!isLocked || intent.getAction().equalsIgnoreCase(ACTION_STOP)) {
             stopAlarmAndStopSelf();
         }
-        return START_STICKY;
+        return START_STICKY_COMPATIBILITY;
     }
 
-    private void init() {
-        registerReceiver(new ScreenOnOffReceiver(), screenOnOffFilter());
-    }
+//    private void init() {
+//        registerReceiver(new ScreenOnOffReceiver(), screenOnOffFilter());
+//    }
 
-    @NonNull
-    private IntentFilter screenOnOffFilter() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        return filter;
-    }
+//    @NonNull
+//    private IntentFilter screenOnOffFilter() {
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(Intent.ACTION_SCREEN_ON);
+//        filter.addAction(Intent.ACTION_SCREEN_OFF);
+//        return filter;
+//    }
 
     private void checkAppChanged() {
         String currentPackage = currentPackage();
@@ -133,7 +133,7 @@ public class AppLockService extends Service {
     }
 
     public static void stop(Context context) {
-        scheduler.shutdown();
+        getScheduler().shutdown();
         isAlarmStarted = false;
     }
 
@@ -157,9 +157,9 @@ public class AppLockService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d("AppLockService", "onDestroy called - " + destroy);
-        if (!destroy) {
-            start(this);
-        }
+//        if (!destroy) {
+//            start(this);
+//        }
 
         destroy = false;
     }
