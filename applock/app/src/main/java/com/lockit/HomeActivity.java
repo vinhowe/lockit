@@ -70,10 +70,11 @@ public class HomeActivity extends BaseActivity {
     }
 
     void lockClicked() {
-        if (binding.appBarLayout.lock.isChecked())
-            AppLockService.start(this);
-        else
+        if (binding.appBarLayout.lock.isChecked()) {
+            AppLockService.start(this); }
+        else {
             AppLockService.stop(this);
+        }
         setAppLocked(binding.appBarLayout.lock.isChecked());
     }
 

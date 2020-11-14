@@ -31,6 +31,7 @@ public class AppLockService extends Service {
     private static final String ACTION_STOP = "com.applock.intent.action.stop_lock_service";
     private static final int REQUEST_CODE = 1001;
     private static PendingIntent appLockServiceIntent;
+    private static ScheduledExecutorService scheduler;
     private String lastPackage = "";
     private static boolean isAlarmStarted = false;
     private ActivityManager activityManager;
@@ -121,21 +122,18 @@ public class AppLockService extends Service {
     }
 
     public static void start(Context context) {
-        ScheduledExecutorService scheduleTaskExecutor = Executors.newSingleThreadScheduledExecutor();
-
-        scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
-            public void run() {
-                try {
-                    getRunIntent(context).send();
-                } catch (PendingIntent.CanceledException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 0, 1, TimeUnit.SECONDS);
         isAlarmStarted = true;
+        getScheduler().scheduleAtFixedRate(() -> {
+            try {
+                getRunIntent(context).send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
+        }, 0, 250, TimeUnit.MILLISECONDS);
     }
 
     public static void stop(Context context) {
+        scheduler.shutdown();
         isAlarmStarted = false;
     }
 
@@ -146,6 +144,13 @@ public class AppLockService extends Service {
             appLockServiceIntent = PendingIntent.getService(context, REQUEST_CODE, intent, 0);
         }
         return appLockServiceIntent;
+    }
+
+    private static ScheduledExecutorService getScheduler() {
+        if (scheduler == null || scheduler.isShutdown()) {
+            scheduler = Executors.newSingleThreadScheduledExecutor();
+        }
+        return scheduler;
     }
 
     @Override
