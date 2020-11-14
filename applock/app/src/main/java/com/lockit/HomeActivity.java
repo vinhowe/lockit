@@ -12,8 +12,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.lockit.apps.AppsFragment;
 import com.lockit.databinding.ApplockBinding;
@@ -52,13 +54,7 @@ public class HomeActivity extends BaseActivity {
                             .content("Allow \"Usage Access\" to start protecting your applications.")
                             .positiveText("Enable")
                             .cancelable(false)
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    super.onPositive(dialog);
-                                    startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-                                }
-                            });
+                            .onPositive((dialog, which) -> startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)));
                 usageAccessDialog.show();
             }
         }
@@ -71,8 +67,8 @@ public class HomeActivity extends BaseActivity {
 
     void lockClicked() {
         if (binding.appBarLayout.lock.isChecked()) {
-            AppLockService.start(this); }
-        else {
+            AppLockService.start(this);
+        } else {
             AppLockService.stop(this);
         }
         setAppLocked(binding.appBarLayout.lock.isChecked());
