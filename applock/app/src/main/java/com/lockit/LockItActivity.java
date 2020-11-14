@@ -26,7 +26,6 @@ public class LockItActivity extends BaseActivity {
 
         Intent intent = getIntent();
         Uri data = intent.getData();
-//        String action = intent.getAction();
 
         boolean isLocked = AppPreference.prefs().get(PreferenceType.IS_APP_LOCKED.toString(), Boolean.TYPE, false);
         Log.d(LockItActivity.class.getSimpleName(), String.valueOf(isLocked));
@@ -35,32 +34,27 @@ public class LockItActivity extends BaseActivity {
         binding = FragmentContainerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (data != null) {
-            if (data.toString().equals("nlock://toggle")) {
-                isLocked = !isLocked;
-                AppPreference.prefs().put(PreferenceType.IS_APP_LOCKED.toString(), isLocked);
+        boolean isTogglingIntent = data != null && data.toString().equals("nlock://toggle");
 
-                Log.d("NfcHandlerActivity", isLocked ? "Locked" : "Unlocked" + " nlock");
+        if (isTogglingIntent) {
+            isLocked = !isLocked;
+            AppPreference.prefs().put(PreferenceType.IS_APP_LOCKED.toString(), isLocked);
 
-                // TODO(vinhowe): Fix evil code duplication
-                if (isLocked) {
-                    AppLockService.start(this);
-                } else {
-                    AppLockService.stop(this);
-                }
-
-                LockedFragment lockedFragment = new LockedFragment(isLocked);
-                Fragments.replaceContentFragment(this, R.id.container, lockedFragment, LockedFragment.class.getSimpleName());
-                // Show for a second before hiding
-                new Handler().postDelayed(this::finish, 1000);
-                return;
-            }
+            Log.d("NfcHandlerActivity", isLocked ? "Locked" : "Unlocked" + " nlock");
         }
 
         if (isLocked) {
             AppLockService.start(this);
         } else {
             AppLockService.stop(this);
+        }
+
+        if (isLocked || isTogglingIntent) {
+            LockedFragment lockedFragment = new LockedFragment(isLocked);
+            Fragments.replaceContentFragment(this, R.id.container, lockedFragment, LockedFragment.class.getSimpleName());
+            // Show for a second before hiding
+            new Handler().postDelayed(this::finish, 1000);
+            return;
         }
 
         finish();
