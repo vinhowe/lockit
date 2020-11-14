@@ -97,12 +97,13 @@ public class HomeActivity extends BaseActivity {
                 AppsFragment.class.getSimpleName());
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private boolean hasUsageAccess() {
         try {
             PackageManager packageManager = getPackageManager();
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
             AppOpsManager appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+            assert appOpsManager != null;
             int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
             return (mode == AppOpsManager.MODE_ALLOWED);
 
