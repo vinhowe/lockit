@@ -65,7 +65,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     void initHeader() {
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.appBarLayout.toolbar);
         binding.appBarLayout.title.setText(getString(R.string.app_name));
     }
 
